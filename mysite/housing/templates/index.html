@@ -1,0 +1,15 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<h1>Choose a subdivision</h1>
+<form name="div-form" id="div-form" action="{% url 'housing:subdivision'%}" method="post">
+	{% csrf_token %}
+	{% load static %}
+	{% for subdivision in subdivisions %}
+	<div> 
+		<div onclick="$('#radio{{subdivision.id}}').prop('checked', true);document.forms['div-form'].submit();return false;">
+			<input type="radio" name="subdivision_id" id="radio{{subdivision.id}}" value="{{subdivision.id}}" style="display:none"/>
+			<div class="subdivision_image"><img src="{{ subdivision.image.url }}"/></div>
+			<div class="subdivision_name">{{ subdivision.name }}</div>
+		</div>
+	</div>
+	{% endfor %}
+</form>

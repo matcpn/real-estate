@@ -1,0 +1,17 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<h1>Choose a house</h1>
+<form name="div-form" id="div-form" action="{% url 'housing:select_house'%}" method="post">
+	{% csrf_token %}
+	{% for house in houses %}
+	<div> 
+		<div onclick="$('#radio{{house.id}}').prop('checked', true);document.forms['div-form'].submit();return false;">
+			<input type="radio" name="house_id" id="radio{{house.id}}" value="{{house.id}}" style="display:none"/>
+			<div><img src="{{ house.image }}"/></div>
+			<div>Price: {{ house.price }}</div>
+			<div>Name: {{ house.name }}</div>
+			<div>Sqft: {{ house.sqft }}</div>
+		</div>
+	</div>
+	<br>
+	{% endfor %}
+</form>

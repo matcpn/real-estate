@@ -1,0 +1,17 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<h1>Choose a Material</h1>
+<form name="div-form" id="div-form" action="{% url 'housing:select_bathroom_material'%}" method="post">
+	{% csrf_token %}
+	{% for material in materials %}
+	<div> 
+		<div onclick="$('#radio{{material.id}}').prop('checked', true);document.forms['div-form'].submit();return false;">
+			<input type="radio" name="material_id" id="radio{{material.id}}" value="{{material.id}}" style="display:none"/>
+			<div><img src="{{ material.image }}"/></div>
+			<div>Price: {{ material.ppsf }}</div>
+			<div>Name: {{ material.name }}</div>
+		</div>
+	</div>
+	<br>
+	{% endfor %}
+	<div>Total cost so far: ${{request.session.total_price}}</div>
+</form>
