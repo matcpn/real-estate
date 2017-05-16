@@ -1,0 +1,25 @@
+Login to existing user:
+<form action="{% url 'housing:authenticate_user' %}" method="post">
+{% csrf_token %}
+Username:<input type="text" name="username"/>
+<br>
+Password:<input type="text" name="password"/>
+<br>
+<input type="submit"/>
+</form>
+<br>
+OR
+<br>
+Create new user:
+<form action="{% url 'housing:create_user' %}" method="post">
+{% csrf_token %}
+First Name:<input type="text" name="first_name"/>
+Last Name:<input type="text" name="last_name"/>
+Username:<input type="text" name="username"/>
+<br>
+Email:<input type="text" name="email"/>
+<br>
+Password:<input type="text" name="password"/>
+<br>
+<input type="submit"/>
+</form>

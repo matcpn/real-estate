@@ -1,0 +1,14 @@
+{% block logout %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<br>	
+	<div style="text-align: right; margin-right: 100px">
+		<a href={% url 'housing:logout_view' %} >logout</a>
+	</div>
+</head>
+{% endblock %}
+<body style="margin-left: 100px">
+{% block content %}
+{% endblock %}
+</body>

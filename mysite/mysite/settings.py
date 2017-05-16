@@ -127,3 +127,5 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = 'C:\Users\Matt\Google Drive\website for dad\website\mysite\housing\media'
+
+LOGIN_URL = '/login/'

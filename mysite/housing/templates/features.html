@@ -1,23 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <h1>Choose a room</h1>
 <form name="div-form" id="div-form" action="{% url 'housing:select_feature'%}" method="post">
 	{% csrf_token %}
 	{% for kitchen in kitchens %}
 	<div> 
-		<div onclick="$('#kitchen').prop('checked', true);document.forms['div-form'].submit();return false;">
-			<input type="radio" name="feature" id="kitchen" value="kitchen" style="display:none"/>
+		<div onclick="$('#kitchen{{ kitchen.id }}').prop('checked', true);document.forms['div-form'].submit();return false;">
+			<input type="radio" name="feature" id="kitchen{{ kitchen.id }}" value="kitchen,{{ kitchen.id }}" style="display:none"/>
 			<div>Kitchen</div>
 			<div><img src="{{ kitchen.image.url }}"/></div>
 			<div>Name: {{ kitchen.name }}</div>
 			<div>Sqft: {{ kitchen.sqft }}</div>
 		</div>
 	</div>
+	<br>
 	{% endfor %}
 	{% for bathroom in bathrooms %}
-	<br>
 	<div> 
-		<div onclick="$('#bathroom').prop('checked', true);document.forms['div-form'].submit();return false;">
-			<input type="radio" name="feature" id="bathroom" value="bathroom" style="display:none"/>
+		<div onclick="$('#bathroom{{ bathroom.id }}').prop('checked', true);document.forms['div-form'].submit();return false;">
+			<input type="radio" name="feature" id="bathroom{{ bathroom.id }}" value="bathroom,{{ bathroom.id }}" style="display:none"/>
 			<div>Bathroom</div>
 			<div><img src="{{ bathroom.image }}"/></div>
 			<div>Name: {{ bathroom.name }}</div>
@@ -28,3 +30,4 @@
 	{% endfor %}
 	<div>Total cost so far: ${{request.session.total_price}}</div>
 </form>
+{% endblock %}

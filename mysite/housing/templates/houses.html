@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <h1>Choose a house</h1>
 <form name="div-form" id="div-form" action="{% url 'housing:select_house'%}" method="post">
@@ -15,3 +17,4 @@
 	<br>
 	{% endfor %}
 </form>
+{% endblock %}

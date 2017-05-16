@@ -1,15 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<h1>Choose a subdivision</h1>
-<form name="div-form" id="div-form" action="{% url 'housing:subdivision'%}" method="post">
+<h1>Choose a lot</h1>
+<form name="div-form" id="div-form" action="{% url 'housing:lot'%}" method="post">
 	{% csrf_token %}
 	{% load static %}
-	{% for subdivision in subdivisions %}
+	{% for lot in lots %}
 	<div> 
-		<div onclick="$('#radio{{subdivision.id}}').prop('checked', true);document.forms['div-form'].submit();return false;">
-			<input type="radio" name="subdivision_id" id="radio{{subdivision.id}}" value="{{subdivision.id}}" style="display:none"/>
-			<div class="subdivision_image"><img src="{{ subdivision.image.url }}"/></div>
-			<div class="subdivision_name">{{ subdivision.name }}</div>
+		<div onclick="$('#radio{{lot.id}}').prop('checked', true);document.forms['div-form'].submit();return false;">
+			<input type="radio" name="lot_id" id="radio{{lot.id}}" value="{{lot.id}}" style="display:none"/>
+			<div class="lot_image"><img src="{{ lot.image.url }}"/></div>
+			<div class="lot_name">{{ lot.name }}</div>
 		</div>
 	</div>
 	{% endfor %}
 </form>
+{% endblock %}
