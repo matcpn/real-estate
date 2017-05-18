@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<h1>Choose a room</h1>
+<form name="div-form" id="div-form" action="{% url 'housing:select_feature'%}" method="post">
+	{% csrf_token %}
+	{% for room in rooms %}
+	<div> 
+		<div onclick="$('#{{roomname|cut:" "}}{{ room.id }}').prop('checked', true);document.forms['div-form'].submit();return false;">
+			<input type="radio" name="room" id="{{roomname|cut:" "}}{{ room.id }}" value="{{roomname|cut:" "}},{{ room.id }}" style="display:none"/>
+			<div>{{roomname}}</div>
+			<div><img src="{{ room.image.url }}"/></div>
+			<div>Name: {{ room.name }}</div>
+			<div>Sqft: {{ room.sqft }}</div>
+		</div>
+	</div>
+	<br>
+	{% endfor %}
+	<div>Total cost so far: ${{request.session.total_price}}</div>
+</form>
+{% endblock %}
