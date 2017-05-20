@@ -67,6 +67,29 @@ class Lot(models.Model):
 	)
 	image = models.ImageField(default='media/no-img.png')
 	price = models.IntegerField()
+	status_choices = (
+		('a', 'available'),
+		('p', 'pending'),
+		('s', 'sold'),
+	)
+	status= models.CharField(max_length=1, choices=status_choices,default='a')
+	@property
+	def highlight(self):
+		if self.status == 'a':
+			return '3fc653'
+		if self.status == 'p':
+			return 'e59e35'
+		else:
+			return 'd62831'
+	@property
+	def fillColor(self):
+		if self.status == 'a':
+			return 'b2ed93'
+		if self.status == 'p':
+			return 'ede893'
+		else:
+			return 'ef6b72'
+
 	def __unicode__(self):
 		return self.name
 
