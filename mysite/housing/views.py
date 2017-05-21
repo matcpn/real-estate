@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, render_to_response, reverse, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from models import Lot, House, Kitchen, Bathroom, PricePerSquareFootUpgrade, UserChoice, Bedroom, LivingRoom, DiningRoom, Garage, UserRoomUpgradeMapping, FlatPriceUpgrade, Room
+from models import Lot, House, Kitchen, Bathroom, PricePerSquareFootUpgrade, UserChoice, Bedroom, LivingRoom, DiningRoom, Garage, UserRoomUpgradeMapping, FlatPriceUpgrade, Room, Subdivision
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.models import User
@@ -57,7 +57,8 @@ def create_user(request):
 @login_required
 def index(request):
 	lots = Lot.objects.all()
-	context = {'lots': lots}
+	subdiv = Subdivision.objects.all()
+	context = {'lots': lots, 'subdiv': subdiv}
 	return render(request, 'index.html', context)
 
 @login_required

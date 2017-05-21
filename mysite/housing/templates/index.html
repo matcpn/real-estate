@@ -4,25 +4,22 @@
 <script type="text/javascript" src="static/jquery.maphilight.min.js"></script>
 <h1>Choose a lot</h1>
 <form name="div-form" id="div-form" action="{% url 'housing:lot'%}" method="post">
-	{% csrf_token %}
-	{% load static %}
-	{% for lot in lots %}
 	<script type="text/javascript">
 		$(function() {
-		   	$('#coveredImage{{lot.id}}').maphilight();
+		   	$('#coveredImage').maphilight();
 		});
 	</script>
-	<div> 
+	{% csrf_token %}
+	{% for sub in subdiv %}
+	<img src="{{ sub.image.url }}" id="coveredImage" usemap="#imgmap"/>
+	<map id="imgmap" name="imgmap">
+	{% endfor %}
+		{% for lot in lots %}
 		<div onclick="$('#radio{{lot.id}}').prop('checked', true);document.forms['div-form'].submit();return false;">
 			<input type="radio" name="lot_id" id="radio{{lot.id}}" value="{{lot.id}}" style="display:none"/>
-			<div class="lot_image" style="float:left">
-				<img src="{{ lot.image.url }}" id="coveredImage{{lot.id}}" usemap="#imgmap{{lot.id}}"/>
-				<map id="imgmap{{lot.id}}" name="imgmap{{lot.id}}">
-					<area alt="" title="" href="#" shape="rect" coords="26,18,140,95" data-maphilight='{"strokeColor":"{{lot.highlight}}","strokeWidth":5,"fillColor":"{{lot.fillColor}}","fillOpacity":0.6}' />
-				</map>
-			</div>
+			<area alt="" title="" href="#" shape="{{lot.shape}}" coords="{{lot.coords}}" data-maphilight='{"strokeColor":"{{lot.highlight}}","strokeWidth":5,"fillColor":"{{lot.fillColor}}","fillOpacity":0.6}' />
 		</div>
-	</div>
-	{% endfor %}
+		{% endfor %}
+	</map>
 </form>
 {% endblock %}

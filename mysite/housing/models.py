@@ -72,7 +72,9 @@ class Lot(models.Model):
 		('p', 'pending'),
 		('s', 'sold'),
 	)
-	status= models.CharField(max_length=1, choices=status_choices,default='a')
+	status = models.CharField(max_length=1, choices=status_choices,default='a')
+	coords = models.CharField(max_length=100, default='0,0,0,0', help_text='use this website to generate these numbers: http://imagemap-generator.dariodomi.de/')
+	shape = models.CharField(max_length=15, default='poly', help_text='use this website to generate this shape: http://imagemap-generator.dariodomi.de/')
 	@property
 	def highlight(self):
 		if self.status == 'a':
@@ -90,6 +92,16 @@ class Lot(models.Model):
 		else:
 			return 'ef6b72'
 
+	def __unicode__(self):
+		return self.name
+
+class Subdivision(models.Model):
+	name = models.CharField(
+		help_text='name of the subdivision',
+		max_length=100
+	)
+	image = models.ImageField(default='media/no-img.png')
+	lots = models.ManyToManyField(Lot, blank=True)
 	def __unicode__(self):
 		return self.name
 
