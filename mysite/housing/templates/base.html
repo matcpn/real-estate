@@ -2,10 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<br>	
+	<br>
+	<a href="{{request.META.HTTP_REFERER}}">Go back</a>
 	<div style="text-align: right; margin-right: 100px">
 		<a href={% url 'housing:logout_view' %} >logout</a>
 	</div>
+	{% block totalprice %}
+	<div style="width: 100%">
+		<div style="width:50%; margin: 0 auto">Total cost so far: ${{request.session.total_price}}</div>	
+	</div>
+	{% endblock %}
 </head>
 {% endblock %}
 <body style="margin-left: 100px">

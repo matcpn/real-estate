@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% block totalprice %}
+{% endblock %}
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="static/jquery.maphilight.min.js"></script>
@@ -17,7 +19,7 @@
 		{% for lot in lots %}
 		<div onclick="$('#radio{{lot.id}}').prop('checked', true);document.forms['div-form'].submit();return false;">
 			<input type="radio" name="lot_id" id="radio{{lot.id}}" value="{{lot.id}}" style="display:none"/>
-			<area alt="" title="" href="#" shape="{{lot.shape}}" coords="{{lot.coords}}" data-maphilight='{"strokeColor":"{{lot.highlight}}","strokeWidth":5,"fillColor":"{{lot.fillColor}}","fillOpacity":0.6}' />
+			<area alt="" title="" href="#" shape="{{lot.shape}}" coords="{{lot.coords}}" data-maphilight='{"strokeColor":"{{lot.highlight}}","strokeWidth":5,"fillColor":"{{lot.fillColor}}","fillOpacity":0.6,"alwaysOn":true}' />
 		</div>
 		{% endfor %}
 	</map>

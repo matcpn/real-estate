@@ -6,7 +6,7 @@
 	{% csrf_token %}
 	{% for room in rooms %}
 	<div> 
-		<div onclick="$('#{{roomname|cut:" "}}{{ room.id }}').prop('checked', true);document.forms['div-form'].submit();return false;">
+		<div onclick="$('#{{roomname|cut:" "}}{{ room.id }}').prop('checked', true);document.forms['div-form'].submit();return false;" style="cursor:pointer">
 			<input type="radio" name="room" id="{{roomname|cut:" "}}{{ room.id }}" value="{{roomname|cut:" "}},{{ room.id }}" style="display:none"/>
 			<div>{{roomname}}</div>
 			<div><img src="{{ room.image.url }}"/></div>
@@ -16,6 +16,5 @@
 	</div>
 	<br>
 	{% endfor %}
-	<div>Total cost so far: ${{request.session.total_price}}</div>
 </form>
 {% endblock %}

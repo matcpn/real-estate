@@ -6,13 +6,12 @@
 	{% csrf_token %}
 	{% for room_type in room_types %}
 	<div> 
-		<div onclick="$('#{{room_type|cut:" "}}').prop('checked', true);document.forms['div-form'].submit();return false;">
+		<div onclick="$('#{{room_type|cut:" "}}').prop('checked', true);document.forms['div-form'].submit();return false;" style="cursor:pointer">
 			<input type="radio" name="room_type" id="{{room_type|cut:" "}}" value="{{room_type}}" style="display:none"/>
 			<div>{{room_type}}s</div>
 		</div>
 	</div>
 	<br>
 	{% endfor %}
-	<div>Total cost so far: ${{request.session.total_price}}</div>
 </form>
 {% endblock %}

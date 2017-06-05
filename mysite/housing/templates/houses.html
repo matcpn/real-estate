@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% block totalprice %}
+{% endblock %}
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <h1>Choose a house</h1>
@@ -6,9 +8,9 @@
 	{% csrf_token %}
 	{% for house in houses %}
 	<div> 
-		<div onclick="$('#radio{{house.id}}').prop('checked', true);document.forms['div-form'].submit();return false;">
+		<div onclick="$('#radio{{house.id}}').prop('checked', true);document.forms['div-form'].submit();return false;" style="cursor:pointer">
 			<input type="radio" name="house_id" id="radio{{house.id}}" value="{{house.id}}" style="display:none"/>
-			<div><img src="{{ house.image }}"/></div>
+			<div><img src="{{ house.image.url }}"/></div>
 			<div>Price: {{ house.price }}</div>
 			<div>Name: {{ house.name }}</div>
 			<div>Sqft: {{ house.sqft }}</div>

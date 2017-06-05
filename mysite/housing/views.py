@@ -110,6 +110,8 @@ def select_feature(request):
 	room_id = room_info[1]
 	room_chosen = get_all_apgrades_for_chosen_room(room_type, room_id, user_choice)
 	context = {
+		'ppsf_upgrade_types' : room_chosen.ppsf_upgrades.upgrade_type.all(),
+		'flat_price_upgrade_types' : room_chosen.flat_price_upgrades.upgrade_type.all(),
 		'upgrades' : room_chosen.ppsf_upgrades.all(),
 		'flat_price_upgrades' : room_chosen.flat_price_upgrades.all(),
 		'room' : room_id,
