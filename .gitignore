@@ -1,2 +1,4 @@
-*.py*
+*.pyc
 db.sqlite3
+*.jpg
+mysite/housing/migrations/*
