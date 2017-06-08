@@ -189,11 +189,16 @@ class UserRoomUpgradeMapping(models.Model):
 		default=None,
 		null=True
 		)
-	def __unicode__(self):
+
+	@property
+	def name(self):
 		if self.ppsf_upgrade is None:
 			return self.roomname + ' upgrade: ' + self.flat_price_upgrade.name
 		else:
 			return self.roomname + ' upgrade: ' + self.ppsf_upgrade.name
+
+	def __unicode__(self):
+		return self.name
 
 class UserChoice(models.Model):
 	user = models.ForeignKey(User)
@@ -203,7 +208,12 @@ class UserChoice(models.Model):
 
 	def __unicode__(self):
 		return self.user.first_name + ' ' + self.user.last_name
-	#@property
+
+	@property
+	def chosen_upgrades(self):
+		mappings = map(UserRoomUpgradeMapping.__unicode__, list(UserRoomUpgradeMapping.objects.filter(user=self)))
+		return mappings
+
 	def getTotalCost(self):
 		cost = self.lot.price
 		for room_upgrade in UserRoomUpgradeMapping.objects.filter(user=self):
