@@ -211,14 +211,13 @@ class UserChoice(models.Model):
 
 	@property
 	def chosen_upgrades(self):
-		mappings = map(UserRoomUpgradeMapping.__unicode__, list(UserRoomUpgradeMapping.objects.filter(user=self)))
+		mappings = "\n".join([str(n) for n in UserRoomUpgradeMapping.objects.filter(user=self)])
 		return mappings
 
 	def getTotalCost(self):
 		cost = self.lot.price
 		for room_upgrade in UserRoomUpgradeMapping.objects.filter(user=self):
 			if room_upgrade.ppsf_upgrade is not None:
-				print(room_upgrade.room.sqft * room_upgrade.ppsf_upgrade.ppsf)
 				cost += (room_upgrade.room.sqft * room_upgrade.ppsf_upgrade.ppsf)
 			else:
 				cost += room_upgrade.flat_price_upgrade.price
@@ -226,3 +225,4 @@ class UserChoice(models.Model):
 		cost += self.house.price
 
 		return cost	
+	getTotalCost.short_description = "Price"

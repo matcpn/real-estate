@@ -8,7 +8,7 @@ from housing import models
 @admin.register(models.UserChoice)
 class UserChoiceAdmin(admin.ModelAdmin):
 	exclude = ['room_upgrades']
-	readonly_fields = ['user', 'house', 'lot', 'chosen_upgrades']
+	readonly_fields = ['user', 'house', 'lot', 'chosen_upgrades', 'getTotalCost']
 
 # Register your models here.
 admin.site.register(models.Lot)
