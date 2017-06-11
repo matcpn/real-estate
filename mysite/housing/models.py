@@ -20,7 +20,7 @@ class PricePerSquareFootUpgrade(models.Model):
 	ppsf = models.FloatField(
 		help_text='price per square foot',
 		)
-	image = models.ImageField(default='media/no-img.png')
+	image = models.ImageField(default='no-img.png')
 	upgrade_type = models.ForeignKey(UpgradeType,
 		help_text="Type of the upgrade. This is to ensure that two upgrades for the same room of the same type cannot be chosen.",
 		blank=True,
@@ -38,7 +38,7 @@ class FlatPriceUpgrade(models.Model):
 	price = models.FloatField(
 		help_text='price of upgrade',
 		)
-	image = models.ImageField(default='media/no-img.png')
+	image = models.ImageField(default='no-img.png')
 	upgrade_type = models.ForeignKey(UpgradeType,
 		help_text="Type of the upgrade. This is to ensure that two upgrades for the same room of the same type cannot be chosen.",
 		blank=True,
@@ -53,7 +53,7 @@ class Room(models.Model):
 		help_text='name of the room',
 		max_length=100
 	)
-	image = models.ImageField(default='media/no-img.png')
+	image = models.ImageField(default='no-img.png')
 	sqft = models.IntegerField()
 	ppsf_upgrades = models.ManyToManyField(PricePerSquareFootUpgrade, blank=True, help_text='choose potential upgrades you would like to be made available for this room',)
 	flat_price_upgrades = models.ManyToManyField(FlatPriceUpgrade, blank=True, help_text='choose potential upgrades you would like to be made available for this room',)
@@ -115,7 +115,7 @@ class House(models.Model):
 	)
 	sqft = models.IntegerField()
 	price = models.FloatField()
-	image = models.ImageField(default='media/no-img.png')
+	image = models.ImageField(default='no-img.png')
 	kitchen = models.ManyToManyField(Kitchen, blank=True)
 	livingRoom = models.ManyToManyField(LivingRoom, blank=True)
 	diningRoom = models.ManyToManyField(DiningRoom, blank=True)
@@ -130,7 +130,7 @@ class Lot(models.Model):
 		help_text='name of the lot',
 		max_length=100
 	)
-	image = models.ImageField(default='media/no-img.png')
+	image = models.ImageField(default='no-img.png')
 	price = models.IntegerField()
 	houses = models.ManyToManyField(House)
 	status_choices = (
@@ -166,7 +166,7 @@ class Subdivision(models.Model):
 		help_text='name of the subdivision',
 		max_length=100
 	)
-	image = models.ImageField(default='media/no-img.png')
+	image = models.ImageField(default='no-img.png')
 	lots = models.ManyToManyField(Lot, blank=True)
 	def __unicode__(self):
 		return self.name

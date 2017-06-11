@@ -1,7 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<h1>{{room_type}} - Choose an Upgrade</h1>
+<h1>{{room_type}}</h1>
+<h3> Chosen Upgrades: </h3>
+{% for upgrade in already_chosen %}
+<div> 
+	<div>
+		<div>Room: {{ upgrade.name }}</div>
+		<div><img src="{{ upgrade.image }}"/></div>
+		{% if upgrade.ppsf_upgrade %} <div>Price Per Square Foot: {{ upgrade.ppsf_upgrade.ppsf }}</div> {% endif %}
+		{% if upgrade.flat_price_upgrade %} <div>Price: {{ upgrade.flat_price_upgrade.price }}</div> {% endif %}
+	</div>
+</div>
+<br>
+{% endfor %}
+<h3>Choose New Upgrades</h3>
 <form name="div-form" id="div-form" action="{% url 'housing:select_room_upgrade'%}" method="post">
 	{% csrf_token %}
 	{% for upgrade in upgrades %}
@@ -9,7 +22,7 @@
 		<div onclick="$('#radio{{upgrade.id}}').prop('checked', true);document.forms['div-form'].submit();return false;" style="cursor:pointer">
 			<input type="radio" name="upgrade" id="radio{{upgrade.id}}" value="{{upgrade.id}},{{room}},True,{{room_type|cut:" "}}" style="display:none"/>
 			<div><img src="{{ upgrade.image }}"/></div>
-			<div>Price: {{ upgrade.ppsf }}</div>
+			<div>Price per square foot: {{ upgrade.ppsf }}</div>
 			<div>Name: {{ upgrade.name }}</div>
 		</div>
 	</div>

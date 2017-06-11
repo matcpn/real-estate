@@ -117,13 +117,18 @@ def select_feature(request):
 		'room' : room_id,
 		'room_type' : room_type
 	}
+	try:
+		context['already_chosen'] = UserRoomUpgradeMapping.objects.filter(user=user_choice, room=Room.objects.get(id=room_id))
+	except ObjectDoesNotExist:
+		print("no objects found")
+
+	print(context)
 	return render(request, 'upgrades.html', context)
 
 @login_required
 def select_room_upgrade(request):
 	user_choice = get_user_choice_for_user(request.user.username)
 	request_variables = request.POST['upgrade'].split(",")
-	print(request_variables)
 	chosen_upgrade_id = request_variables[0]
 	room_id = request_variables[1]
 	room_type = request_variables[3]
