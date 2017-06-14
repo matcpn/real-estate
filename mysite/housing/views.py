@@ -108,10 +108,22 @@ def select_feature(request):
 	room_info = room.split(",")
 	room_type = room_info[0]
 	room_id = room_info[1]
-	room_chosen = get_all_apgrades_for_chosen_room(room_type, room_id, user_choice)
+	room_chosen = get_all_upgrades_for_chosen_room(room_type, room_id, user_choice)
+	ppsf_upgrades = room_chosen.ppsf_upgrades.all().order_by('upgrade_type')
+	flat_price_upgrades = room_chosen.flat_price_upgrades.all().order_by('upgrade_type')
+	ppsf_upgrades_by_type = {}
+	flat_price_upgrades_by_type = {}
+	for upgrade in ppsf_upgrades:
+		key = upgrade.upgrade_type
+		ppsf_upgrades_by_type.setdefault(key, [])
+		ppsf_upgrades_by_type[key].append(upgrade)
+	for upgrade in flat_price_upgrades:
+		key = upgrade.upgrade_type
+		flat_price_upgrades_by_type.setdefault(key, [])
+		flat_price_upgrades_by_type[key].append(upgrade)
 	context = {
-		#'ppsf_upgrade_types' : room_chosen.ppsf_upgrades.upgrade_type.all(),
-		#'flat_price_upgrade_types' : room_chosen.flat_price_upgrades.upgrade_type.all(),
+		'ppsf_upgrades_by_type' : ppsf_upgrades_by_type,
+		'flat_price_upgrades_by_type' : flat_price_upgrades_by_type,
 		'upgrades' : room_chosen.ppsf_upgrades.all(),
 		'flat_price_upgrades' : room_chosen.flat_price_upgrades.all(),
 		'room' : room_id,
@@ -210,7 +222,7 @@ def get_object_for_room_type(room_type, room_id):
 	if room_type == "Bedroom":
 		return Bedroom.objects.get(pk=room_id)
 
-def get_all_apgrades_for_chosen_room(room_type, room_id, user_choice):
+def get_all_upgrades_for_chosen_room(room_type, room_id, user_choice):
 	if room_type == "Kitchen":
 		return user_choice.house.kitchen.get(pk=room_id)
 	if room_type == "Bathroom":

@@ -17,6 +17,8 @@
 <h3>Choose New Upgrades</h3>
 <form name="div-form" id="div-form" action="{% url 'housing:select_room_upgrade'%}" method="post">
 	{% csrf_token %}
+	{% for upgrade_type, upgrades in ppsf_upgrades_by_type.items %}
+	<h4>Type: {{upgrade_type}}</h4>
 	{% for upgrade in upgrades %}
 	<div> 
 		<div onclick="$('#radio{{upgrade.id}}').prop('checked', true);document.forms['div-form'].submit();return false;" style="cursor:pointer">
@@ -28,7 +30,10 @@
 	</div>
 	<br>
 	{% endfor %}
-	{% for flat_price_upgrade in flat_price_upgrades %}
+	{% endfor %}
+	{% for upgrade_type, upgrades in flat_price_upgrades_by_type.items %}
+	<h4>Type: {{upgrade_type}}</h4>
+	{% for flat_price_upgrade in upgrades %}
 	<div> 
 		<div onclick="$('#radio{{flat_price_upgrade.id}}').prop('checked', true);document.forms['div-form'].submit();return false;" style="cursor:pointer">
 			<input type="radio" name="upgrade" id="radio{{flat_price_upgrade.id}}" value="{{flat_price_upgrade.id}},{{room}},False,{{room_type|cut:" "}}" style="display:none"/>
@@ -38,6 +43,7 @@
 		</div>
 	</div>
 	<br>
+	{% endfor %}
 	{% endfor %}
 </form>
 {% endblock %}
