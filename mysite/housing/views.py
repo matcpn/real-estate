@@ -23,13 +23,12 @@ def logout_view(request):
 def authenticate_user(request):
 	if request.method == 'POST':
 		# .. authenticate your user
-		username = request.POST['username']
+		email = request.POST['email']
 		password = request.POST['password']
-		user = authenticate(request, username=username, password=password)
+		user = authenticate(request, username=email, password=password)
 		if user is not None:
 			auth_login(request, user)
-			# redirect to the value of next if it is entered, otherwise
-			# to /accounts/profile/
+			# redirect to the value of next if it is entered
 			return redirect(request.POST.get('next','/'))
 		else:
 			return render(request, 'login.html')
@@ -37,19 +36,24 @@ def authenticate_user(request):
 def create_user(request):
 	if request.method == 'POST':
 		# .. authenticate your user
-		username = request.POST['username']
 		password = request.POST['password']
 		email = request.POST['email']
+		username = "wtf man"
 		first_name = request.POST['first_name']
 		last_name = request.POST['last_name']
 		user = User.objects.create_user(username, email, password)
+		print(last_name)
+		print(first_name)
+		print(email)
+		print(username)
+		print(password)
+		print(user)
 		user.last_name = last_name
 		user.first_name = first_name
 		user.save()
 		if user is not None:
 			auth_login(request, user)
-			# redirect to the value of next if it is entered, otherwise
-			# to /accounts/profile/
+			# redirect to the value of next if it is entered
 			return redirect(request.POST.get('next','/'))
 		else:
 			return render(request, 'login.html')

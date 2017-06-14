@@ -120,9 +120,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "housing/static"),
-]
+STATIC_ROOT = 'C:\Users\Matt\Google Drive\website for dad\website\mysite\housing\static'
 
 MEDIA_URL = '/media/'
 
