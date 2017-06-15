@@ -38,16 +38,10 @@ def create_user(request):
 		# .. authenticate your user
 		password = request.POST['password']
 		email = request.POST['email']
-		username = "wtf man"
+		username = request.POST['username']
 		first_name = request.POST['first_name']
 		last_name = request.POST['last_name']
 		user = User.objects.create_user(username, email, password)
-		print(last_name)
-		print(first_name)
-		print(email)
-		print(username)
-		print(password)
-		print(user)
 		user.last_name = last_name
 		user.first_name = first_name
 		user.save()

@@ -3,6 +3,23 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth import backends, get_user_model
+from django.db.models import Q
+
+
+class ModelBackend(backends.ModelBackend):
+    def authenticate(self, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+
+        try:
+            user = UserModel.objects.get(Q(username__iexact=username) | Q(email__iexact=username))
+
+            if user.check_password(password):
+                return user
+        except UserModel.DoesNotExist:
+            # Run the default password hasher once to reduce the timing
+            # difference between an existing and a non-existing user (#20760).
+            UserModel().set_password(password)
 
 class UpgradeType(models.Model):
 	name = models.CharField(
@@ -199,6 +216,9 @@ class UserRoomUpgradeMapping(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+	class Meta:
+		unique_together = ('user','room','upgrade_type')
 
 class UserChoice(models.Model):
 	user = models.ForeignKey(User)
