@@ -82,58 +82,66 @@ def room_types(request):
 
 @login_required
 def select_room_type(request):
-	user_choice = get_user_choice_for_user(request.user.username)
-	room_type = request.POST['room_type']
-	if room_type in 'Kitchen':
-		context = { 'rooms' : user_choice.house.kitchen.all() }
-	if room_type == 'Bathroom':
-		context = { 'rooms' : user_choice.house.bathroom.all() }
-	if room_type == 'Bedroom':
-		context = { 'rooms' : user_choice.house.bedroom.all() }
-	if room_type == 'Garage':
-		context = { 'rooms' : user_choice.house.garage.all() }
-	if room_type == 'Living Room': 
-		context = { 'rooms' : user_choice.house.livingRoom.all() }
-	if room_type == 'Dining Room':
-		context = { 'rooms' : user_choice.house.diningRoom.all() }
-	context['roomname'] = room_type
-	return render(request, 'rooms.html', context)
+	if request.method == 'POST':
+		request.session['room_type'] = request.POST['room_type']
+		return HttpResponseRedirect(reverse('housing:select_room_type', args=()))
+	else:
+		room_type = request.session['room_type']
+		user_choice = get_user_choice_for_user(request.user.username)
+		if room_type in 'Kitchen':
+			context = { 'rooms' : user_choice.house.kitchen.all() }
+		if room_type == 'Bathroom':
+			context = { 'rooms' : user_choice.house.bathroom.all() }
+		if room_type == 'Bedroom':
+			context = { 'rooms' : user_choice.house.bedroom.all() }
+		if room_type == 'Garage':
+			context = { 'rooms' : user_choice.house.garage.all() }
+		if room_type == 'Living Room': 
+			context = { 'rooms' : user_choice.house.livingRoom.all() }
+		if room_type == 'Dining Room':
+			context = { 'rooms' : user_choice.house.diningRoom.all() }
+		context['roomname'] = room_type
+		return render(request, 'rooms.html', context)
 
 @login_required
 def select_feature(request):
-	user_choice = get_user_choice_for_user(request.user.username)
-	room = request.POST['room']
-	room_info = room.split(",")
-	room_type = room_info[0]
-	room_id = room_info[1]
-	room_chosen = get_all_upgrades_for_chosen_room(room_type, room_id, user_choice)
-	ppsf_upgrades = room_chosen.ppsf_upgrades.all().order_by('upgrade_type')
-	flat_price_upgrades = room_chosen.flat_price_upgrades.all().order_by('upgrade_type')
-	ppsf_upgrades_by_type = {}
-	flat_price_upgrades_by_type = {}
-	for upgrade in ppsf_upgrades:
-		key = upgrade.upgrade_type
-		ppsf_upgrades_by_type.setdefault(key, [])
-		ppsf_upgrades_by_type[key].append(upgrade)
-	for upgrade in flat_price_upgrades:
-		key = upgrade.upgrade_type
-		flat_price_upgrades_by_type.setdefault(key, [])
-		flat_price_upgrades_by_type[key].append(upgrade)
-	context = {
-		'ppsf_upgrades_by_type' : ppsf_upgrades_by_type,
-		'flat_price_upgrades_by_type' : flat_price_upgrades_by_type,
-		'upgrades' : room_chosen.ppsf_upgrades.all(),
-		'flat_price_upgrades' : room_chosen.flat_price_upgrades.all(),
-		'room' : room_id,
-		'room_type' : room_type
-	}
-	try:
-		context['already_chosen'] = UserRoomUpgradeMapping.objects.filter(user=user_choice, room=Room.objects.get(id=room_id))
-	except ObjectDoesNotExist:
-		print("no objects found")
+	if request.method == 'POST':
+		request.session['room'] = request.POST['room']
+		return HttpResponseRedirect(reverse('housing:select_feature', args=()))
+	else:
+		room = request.session['room']
+		user_choice = get_user_choice_for_user(request.user.username)
+		room_info = room.split(",")
+		room_type = room_info[0]
+		room_id = room_info[1]
+		room_chosen = get_all_upgrades_for_chosen_room(room_type, room_id, user_choice)
+		ppsf_upgrades = room_chosen.ppsf_upgrades.all().order_by('upgrade_type')
+		flat_price_upgrades = room_chosen.flat_price_upgrades.all().order_by('upgrade_type')
+		ppsf_upgrades_by_type = {}
+		flat_price_upgrades_by_type = {}
+		for upgrade in ppsf_upgrades:
+			key = upgrade.upgrade_type
+			ppsf_upgrades_by_type.setdefault(key, [])
+			ppsf_upgrades_by_type[key].append(upgrade)
+		for upgrade in flat_price_upgrades:
+			key = upgrade.upgrade_type
+			flat_price_upgrades_by_type.setdefault(key, [])
+			flat_price_upgrades_by_type[key].append(upgrade)
+		context = {
+			'ppsf_upgrades_by_type' : ppsf_upgrades_by_type,
+			'flat_price_upgrades_by_type' : flat_price_upgrades_by_type,
+			'upgrades' : room_chosen.ppsf_upgrades.all(),
+			'flat_price_upgrades' : room_chosen.flat_price_upgrades.all(),
+			'room' : room_id,
+			'room_type' : room_type
+		}
+		try:
+			context['already_chosen'] = UserRoomUpgradeMapping.objects.filter(user=user_choice, room=Room.objects.get(id=room_id))
+		except ObjectDoesNotExist:
+			print("no objects found")
 
-	print(context)
-	return render(request, 'upgrades.html', context)
+		print(context)
+		return render(request, 'upgrades.html', context)
 
 @login_required
 def select_room_upgrade(request):
