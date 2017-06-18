@@ -31,8 +31,14 @@ class UpgradeType(models.Model):
 
 class PricePerSquareFootUpgrade(models.Model):
 	name = models.CharField(
-		help_text='name of the material',
+		help_text='name of the upgrade',
 		max_length=100
+	)
+	description = models.CharField(
+		help_text='description of the upgrade',
+		max_length=1024,
+		null=True,
+		default=None
 	)
 	ppsf = models.FloatField(
 		help_text='price per square foot',
@@ -50,7 +56,14 @@ class PricePerSquareFootUpgrade(models.Model):
 class FlatPriceUpgrade(models.Model):
 	name = models.CharField(
 		help_text='name of the upgrade',
-		max_length=100
+		max_length=100,
+		null=True,
+	)
+	description = models.CharField(
+		help_text='description of the upgrade',
+		max_length=1024,
+		null=True,
+		default=None
 	)
 	price = models.FloatField(
 		help_text='price of upgrade',

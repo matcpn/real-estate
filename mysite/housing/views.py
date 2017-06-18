@@ -144,14 +144,9 @@ def select_feature(request):
 		return render(request, 'upgrades.html', context)
 
 @login_required
-def select_room_upgrade(request):
+def select_room_upgrade(request, chosen_upgrade_id, room_id, is_ppsf_upgrade, room_type):
 	user_choice = get_user_choice_for_user(request.user.username)
-	request_variables = request.POST['upgrade'].split(",")
-	chosen_upgrade_id = request_variables[0]
-	room_id = request_variables[1]
-	room_type = request_variables[3]
 	room_object = get_object_for_room_type(room_type, room_id)
-	is_ppsf_upgrade = request_variables[2]
 
 	#create a new mapping for the new upgrade chosen
 	if is_ppsf_upgrade == 'True':
