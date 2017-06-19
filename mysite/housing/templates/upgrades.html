@@ -12,6 +12,49 @@
 		{% if upgrade.flat_price_upgrade %} <div>Price: {{ upgrade.flat_price_upgrade.price }}</div> {% endif %}
 	</div>
 </div>
+<div class="container">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <p class="lead">{{room_type}}</p>
+                <div class="list-group">
+                	{% for upgrade_type, upgrades in ppsf_upgrades_by_type.items %}
+					<a href="#" class="list-group-item">{{upgrade_type}}</a>
+					{% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="row">
+					{% for upgrade_type, upgrades in ppsf_upgrades_by_type.items %}
+						{% for upgrade in upgrades %}
+				        <div class="col-sm-4 col-lg-4 col-md-4">
+				      	    <div class="thumbnail">
+				                <img src="{{ upgrade.image }}" alt="">
+				                <div class="caption">
+					                <h4 class="pull-right">${{ upgrade.ppsf }}/sf</h4>
+					                <h4><a href="../select_room_upgrade/{{upgrade.id}}/{{room}}/True/{{room_type|cut:" "}}">{{ upgrade.name }}</a>
+					                </h4>
+					                <p>{{ upgrade.description }}</p>
+				                </div>
+				            </div>
+				        </div>
+						{% endfor %}
+					</div>
+					{% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container -->
+    
+
 <br>
 {% endfor %}
 <h3>Choose New Upgrades</h3>
@@ -31,11 +74,6 @@
                 </div>
             </div>
         </div>
-		<div> 
-			<div onclick="$('#radio{{upgrade.id}}').prop('checked', true);document.forms['div-form'].submit();return false;" style="cursor:pointer">
-				<input type="radio" name="upgrade" id="radio{{upgrade.id}}" value="" style="display:none"/>
-			</div>
-		</div>
 		{% endfor %}
 	</div>
 	{% endfor %}
@@ -43,12 +81,15 @@
 	<h4>Type: {{upgrade_type}}</h4>
 	<div class="row">
 		{% for flat_price_upgrade in upgrades %}
-		<div> 
-			<div onclick="$('#radio{{flat_price_upgrade.id}}').prop('checked', true);document.forms['div-form'].submit();return false;" style="cursor:pointer">
-				<input type="radio" name="upgrade" id="radio{{flat_price_upgrade.id}}" value="{{flat_price_upgrade.id}},{{room}},False,{{room_type|cut:" "}}" style="display:none"/>
-				<div><img src="{{ flat_price_upgrade.image }}"/></div>
-				<div>Price: {{ flat_price_upgrade.price }}</div>
-				<div>Name: {{ flat_price_upgrade.name }}</div>
+		<div class="col-sm-4 col-lg-4 col-md-4">
+      	    <div class="thumbnail">
+      	    <img src="{{ flat_price_upgrade.image }}" alt="">
+                <div class="caption">
+	                <h4 class="pull-right">${{ flat_price_upgrade.price }}</h4>
+	                <h4><a href="../select_room_upgrade/{{flat_price_upgrade.id}}/{{room}}/False/{{room_type|cut:" "}}">{{ upgrade.name }}</a>
+	                </h4>
+	                <p>{{ flat_price_upgrade.description }}</p>
+                </div>
 			</div>
 		</div>
 		<br>

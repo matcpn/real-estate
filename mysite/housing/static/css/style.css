@@ -129,6 +129,12 @@ textarea {
   resize: vertical;
 }
 
+.navbar-nav.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+}
+
 .field-wrap {
   position: relative;
   margin-bottom: 40px;
