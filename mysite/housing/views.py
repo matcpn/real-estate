@@ -117,19 +117,21 @@ def select_feature(request):
 		room_chosen = get_all_upgrades_for_chosen_room(room_type, room_id, user_choice)
 		ppsf_upgrades = room_chosen.ppsf_upgrades.all().order_by('upgrade_type')
 		flat_price_upgrades = room_chosen.flat_price_upgrades.all().order_by('upgrade_type')
-		ppsf_upgrades_by_type = {}
-		flat_price_upgrades_by_type = {}
+		upgrades_by_type = {}
 		for upgrade in ppsf_upgrades:
 			key = upgrade.upgrade_type
-			ppsf_upgrades_by_type.setdefault(key, [])
-			ppsf_upgrades_by_type[key].append(upgrade)
+			upgrades_by_type.setdefault(key, [])
+			upgrades_by_type[key].append(upgrade)
+		#for upgrade in flat_price_upgrades:
+		#	key = upgrade.upgrade_type
+		#	flat_price_upgrades_by_type.setdefault(key, [])
+		#	flat_price_upgrades_by_type[key].append(upgrade)
 		for upgrade in flat_price_upgrades:
 			key = upgrade.upgrade_type
-			flat_price_upgrades_by_type.setdefault(key, [])
-			flat_price_upgrades_by_type[key].append(upgrade)
+			upgrades_by_type.setdefault(key, [])
+			upgrades_by_type[key].append(upgrade)
 		context = {
-			'ppsf_upgrades_by_type' : ppsf_upgrades_by_type,
-			'flat_price_upgrades_by_type' : flat_price_upgrades_by_type,
+			'upgrades_by_type' : upgrades_by_type,
 			'upgrades' : room_chosen.ppsf_upgrades.all(),
 			'flat_price_upgrades' : room_chosen.flat_price_upgrades.all(),
 			'room' : room_id,

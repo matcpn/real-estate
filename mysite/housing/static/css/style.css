@@ -30,6 +30,10 @@ a:hover {
   box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
 }
 
+.price-header {
+  cursor: default;
+}
+
 .tab-group {
   list-style: none;
   padding: 0;
