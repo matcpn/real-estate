@@ -122,10 +122,6 @@ def select_feature(request):
 			key = upgrade.upgrade_type
 			upgrades_by_type.setdefault(key, [])
 			upgrades_by_type[key].append(upgrade)
-		#for upgrade in flat_price_upgrades:
-		#	key = upgrade.upgrade_type
-		#	flat_price_upgrades_by_type.setdefault(key, [])
-		#	flat_price_upgrades_by_type[key].append(upgrade)
 		for upgrade in flat_price_upgrades:
 			key = upgrade.upgrade_type
 			upgrades_by_type.setdefault(key, [])

@@ -52,6 +52,10 @@ class PricePerSquareFootUpgrade(models.Model):
 		)
 	def __unicode__(self):
 		return self.name
+	@property
+	def isPPSFUpgrade(self):
+	    return True
+	
 
 class FlatPriceUpgrade(models.Model):
 	name = models.CharField(
@@ -77,6 +81,9 @@ class FlatPriceUpgrade(models.Model):
 		)
 	def __unicode__(self):
 		return self.name
+	@property
+	def isPPSFUpgrade(self):
+	    return False
 
 class Room(models.Model):
 	roomname =  models.CharField(

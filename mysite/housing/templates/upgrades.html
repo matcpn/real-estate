@@ -9,8 +9,8 @@
 	<div>
 		<div>Room: {{ upgrade.name }}</div>
 		<div><img src="{{ upgrade.image }}"/></div>
-		{% if upgrade.ppsf_upgrade %} <div>Price Per Square Foot: {{ upgrade.ppsf_upgrade.ppsf }}</div> {% endif %}
-		{% if upgrade.flat_price_upgrade %} <div>Price: {{ upgrade.flat_price_upgrade.price }}</div> {% endif %}
+		{% if upgrade.ppsf_upgrade %} <div>Price Per Square Foot: {{ upgrade.ppsf_upgrade.ppsf }}</div>
+		{% else %} <div>Price: {{ upgrade.flat_price_upgrade.price }}</div> {% endif %}
 	</div>
 </div>
 {% endfor %}
@@ -22,7 +22,7 @@
                 <p class="lead">{{room_type}}</p>
                 <div class="list-group">
                 	{% for upgrade_type, upgrades in upgrades_by_type.items %}
-					<a href="#" class="list-group-item upgrade-type-selector {% if forloop.first %}active{% endif %}">{{upgrade_type}}</a>
+					<a href="#" id="{{upgrade_type}}" class="list-group-item upgrade-type-selector {% if forloop.first %}active{% endif %}">{{upgrade_type}}</a>
 					{% endfor %}
                 </div>
             </div>
@@ -32,12 +32,17 @@
                 <div class="row">
 					{% for upgrade_type, upgrades in upgrades_by_type.items %}
 						{% for upgrade in upgrades %}
-				        <div class="col-sm-4 col-lg-4 col-md-4">
+				        <div class="col-sm-4 col-lg-4 col-md-4 {{upgrade_type}} choosable-upgrade">
 				      	    <div class="thumbnail">
 				                <img src="{{ upgrade.image }}" alt="">
 				                <div class="caption">
+					                {% if upgrade.isPPSFUpgrade %}
 					                <h4 class="pull-right">${{ upgrade.ppsf }}/sf</h4>
 					                <h4><a href="../select_room_upgrade/{{upgrade.id}}/{{room}}/True/{{room_type|cut:" "}}">{{ upgrade.name }}</a>
+					                {% else %}
+					                <h4 class="pull-right">${{ upgrade.price }}</h4>
+					                <h4><a href="../select_room_upgrade/{{upgrade.id}}/{{room}}/False/{{room_type|cut:" "}}">{{ upgrade.name }}</a>
+					                {% endif %}
 					                </h4>
 					                <p>{{ upgrade.description }}</p>
 				                </div>
