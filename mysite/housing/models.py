@@ -31,8 +31,14 @@ class UpgradeType(models.Model):
 
 class PricePerSquareFootUpgrade(models.Model):
 	name = models.CharField(
-		help_text='name of the material',
+		help_text='name of the upgrade',
 		max_length=100
+	)
+	description = models.CharField(
+		help_text='description of the upgrade',
+		max_length=1024,
+		null=True,
+		default=None
 	)
 	ppsf = models.FloatField(
 		help_text='price per square foot',
@@ -46,11 +52,22 @@ class PricePerSquareFootUpgrade(models.Model):
 		)
 	def __unicode__(self):
 		return self.name
+	@property
+	def isPPSFUpgrade(self):
+	    return True
+	
 
 class FlatPriceUpgrade(models.Model):
 	name = models.CharField(
 		help_text='name of the upgrade',
-		max_length=100
+		max_length=100,
+		null=True,
+	)
+	description = models.CharField(
+		help_text='description of the upgrade',
+		max_length=1024,
+		null=True,
+		default=None
 	)
 	price = models.FloatField(
 		help_text='price of upgrade',
@@ -64,6 +81,9 @@ class FlatPriceUpgrade(models.Model):
 		)
 	def __unicode__(self):
 		return self.name
+	@property
+	def isPPSFUpgrade(self):
+	    return False
 
 class Room(models.Model):
 	roomname =  models.CharField(
@@ -213,6 +233,14 @@ class UserRoomUpgradeMapping(models.Model):
 			return self.roomname + ' upgrade: ' + self.flat_price_upgrade.name
 		else:
 			return self.roomname + ' upgrade: ' + self.ppsf_upgrade.name
+
+	@property
+	def upgrade_name(self):
+		if self.ppsf_upgrade is None:
+			return self.flat_price_upgrade.name
+		else:
+			return self.ppsf_upgrade.name
+
 
 	def __unicode__(self):
 		return self.name

@@ -1,0 +1,9 @@
+.price-header {
+  cursor: default;
+}
+
+.navbar-nav.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+}
