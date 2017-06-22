@@ -2,18 +2,8 @@
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="../static/js/upgrades.js" type="text/javascript"></script>
-<h1>{{room_type}}</h1>
-<h3> Chosen Upgrades: </h3>
-{% for upgrade in already_chosen %}
-<div> 
-	<div>
-		<div>Room: {{ upgrade.name }}</div>
-		<div><img src="{{ upgrade.image }}"/></div>
-		{% if upgrade.ppsf_upgrade %} <div>Price Per Square Foot: {{ upgrade.ppsf_upgrade.ppsf }}</div>
-		{% else %} <div>Price: {{ upgrade.flat_price_upgrade.price }}</div> {% endif %}
-	</div>
-</div>
-{% endfor %}
+<h1 style="text-align:center">{{room_type}}</h1>
+
 <div class="container">
 
         <div class="row">
@@ -26,15 +16,43 @@
 					{% endfor %}
                 </div>
             </div>
+ 			<div class="col-md-9">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                    <h3> Chosen Upgrade: </h3>
+
+					{% for upgrade in already_chosen %}
+					<div class="col-sm-4 col-lg-4 col-md-4 {{ upgrade.upgrade_type }} chosen-upgrade"> 
+						<div class="thumbnail">
+							<div><img src="{{ upgrade.image.url }}"/></div>
+							<div class="caption">
+							<h4 style="text-align:center">Upgrade: {{upgrade.upgrade_name}}</h4>
+								<h4 class="pull-right"> 
+								{% if upgrade.ppsf_upgrade %} 
+									Price Per Square Foot: {{ upgrade.ppsf_upgrade.ppsf }}
+								{% else %}
+									Price: {{ upgrade.flat_price_upgrade.price }}
+								{% endif %}
+								</h4>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+                    </div>
+
+                </div>
 
             <div class="col-md-9">
 
                 <div class="row">
+                <h3>Choose new upgrades: </h3>
 					{% for upgrade_type, upgrades in upgrades_by_type.items %}
 						{% for upgrade in upgrades %}
 				        <div class="col-sm-4 col-lg-4 col-md-4 {{upgrade_type}} choosable-upgrade">
 				      	    <div class="thumbnail">
-				                <img src="{{ upgrade.image }}" alt="">
+				                <img src="{{ upgrade.image.url }}" alt="">
 				                <div class="caption">
 					                {% if upgrade.isPPSFUpgrade %}
 					                <h4 class="pull-right">${{ upgrade.ppsf }}/sf</h4>

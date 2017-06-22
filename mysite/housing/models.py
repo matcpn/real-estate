@@ -234,6 +234,14 @@ class UserRoomUpgradeMapping(models.Model):
 		else:
 			return self.roomname + ' upgrade: ' + self.ppsf_upgrade.name
 
+	@property
+	def upgrade_name(self):
+		if self.ppsf_upgrade is None:
+			return self.flat_price_upgrade.name
+		else:
+			return self.ppsf_upgrade.name
+
+
 	def __unicode__(self):
 		return self.name
 

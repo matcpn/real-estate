@@ -1,25 +1,23 @@
 $(document).ready(function() {
+	filter();
 	$(".upgrade-type-selector").click(function(e) {
 	    $(".upgrade-type-selector").removeClass("active");
 	    $(e.target).addClass("active");
-	    $(".choosable-upgrade").each(function(index, element) {
-			element.style.display = 'none';
-		});
-		var clickedID = e.target.id;
-		var classClicked = "." + clickedID;
-		$(classClicked).each(function(index, element) {
-			element.style.display = 'block';
-		});
+	    filter();
 	});
 
 });
 
-function filter(e) {
+function filter() {
+	var activeID = $(".active")[0].id;
+	var typeSelected = "." + activeID;
+	$(".chosen-upgrade").each(function(index, element) {
+		element.style.display = 'none';
+	});
 	$(".choosable-upgrade").each(function(index, element) {
 		element.style.display = 'none';
 	});
-	var clickedID = e.target.id;
-	$("."+clickedID).forEach(function(index, element) {
+	$(typeSelected).each(function(index, element) {
 		element.style.display = 'block';
 	});
 };

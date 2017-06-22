@@ -173,7 +173,9 @@ def select_room_upgrade(request, chosen_upgrade_id, room_id, is_ppsf_upgrade, ro
 		print("no objects found")
 
 	new_mapping.save()
-	return room_types(request)
+	request.session['total_price'] = int(calcTotalPrice(request))
+	context = { 'room_types' : room_types_array }
+	return HttpResponseRedirect(reverse('housing:room_types', args=()))
 
 @login_required
 def calcTotalPrice(request):
@@ -182,9 +184,10 @@ def calcTotalPrice(request):
 
 @login_required
 def select_house(request):
-	user_choice = get_user_choice_for_user(request.user.username)
-	user_choice.house = House.objects.get(pk=request.POST['house_id'])
-	user_choice.save()
+	if request.method == 'POST':
+		user_choice = get_user_choice_for_user(request.user.username)
+		user_choice.house = House.objects.get(pk=request.POST['house_id'])
+		user_choice.save()
 	return room_types(request)
 
 def get_user_choice_for_user(username):
