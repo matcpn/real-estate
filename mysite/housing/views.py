@@ -117,19 +117,17 @@ def select_feature(request):
 		room_chosen = get_all_upgrades_for_chosen_room(room_type, room_id, user_choice)
 		ppsf_upgrades = room_chosen.ppsf_upgrades.all().order_by('upgrade_type')
 		flat_price_upgrades = room_chosen.flat_price_upgrades.all().order_by('upgrade_type')
-		ppsf_upgrades_by_type = {}
-		flat_price_upgrades_by_type = {}
+		upgrades_by_type = {}
 		for upgrade in ppsf_upgrades:
 			key = upgrade.upgrade_type
-			ppsf_upgrades_by_type.setdefault(key, [])
-			ppsf_upgrades_by_type[key].append(upgrade)
+			upgrades_by_type.setdefault(key, [])
+			upgrades_by_type[key].append(upgrade)
 		for upgrade in flat_price_upgrades:
 			key = upgrade.upgrade_type
-			flat_price_upgrades_by_type.setdefault(key, [])
-			flat_price_upgrades_by_type[key].append(upgrade)
+			upgrades_by_type.setdefault(key, [])
+			upgrades_by_type[key].append(upgrade)
 		context = {
-			'ppsf_upgrades_by_type' : ppsf_upgrades_by_type,
-			'flat_price_upgrades_by_type' : flat_price_upgrades_by_type,
+			'upgrades_by_type' : upgrades_by_type,
 			'upgrades' : room_chosen.ppsf_upgrades.all(),
 			'flat_price_upgrades' : room_chosen.flat_price_upgrades.all(),
 			'room' : room_id,
@@ -144,14 +142,9 @@ def select_feature(request):
 		return render(request, 'upgrades.html', context)
 
 @login_required
-def select_room_upgrade(request):
+def select_room_upgrade(request, chosen_upgrade_id, room_id, is_ppsf_upgrade, room_type):
 	user_choice = get_user_choice_for_user(request.user.username)
-	request_variables = request.POST['upgrade'].split(",")
-	chosen_upgrade_id = request_variables[0]
-	room_id = request_variables[1]
-	room_type = request_variables[3]
 	room_object = get_object_for_room_type(room_type, room_id)
-	is_ppsf_upgrade = request_variables[2]
 
 	#create a new mapping for the new upgrade chosen
 	if is_ppsf_upgrade == 'True':
@@ -180,7 +173,9 @@ def select_room_upgrade(request):
 		print("no objects found")
 
 	new_mapping.save()
-	return room_types(request)
+	request.session['total_price'] = int(calcTotalPrice(request))
+	context = { 'room_types' : room_types_array }
+	return HttpResponseRedirect(reverse('housing:room_types', args=()))
 
 @login_required
 def calcTotalPrice(request):
@@ -189,9 +184,10 @@ def calcTotalPrice(request):
 
 @login_required
 def select_house(request):
-	user_choice = get_user_choice_for_user(request.user.username)
-	user_choice.house = House.objects.get(pk=request.POST['house_id'])
-	user_choice.save()
+	if request.method == 'POST':
+		user_choice = get_user_choice_for_user(request.user.username)
+		user_choice.house = House.objects.get(pk=request.POST['house_id'])
+		user_choice.save()
 	return room_types(request)
 
 def get_user_choice_for_user(username):
