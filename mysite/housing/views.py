@@ -56,7 +56,14 @@ def create_user(request):
 def index(request):
 	lots = Lot.objects.all()
 	subdiv = Subdivision.objects.all()
-	context = {'lots': lots, 'subdiv': subdiv}
+	user_choice = get_user_choice_for_user(request.user.username)
+	lots_clickable = {}
+	for lot in lots:
+		if lot.status == "p" or lot.status == "s":
+			lots_clickable[lot] = user_choice.lot == lot
+		else:
+			lots_clickable[lot] = True
+	context = {'lots': lots_clickable, 'subdiv': subdiv}
 	return render(request, 'index.html', context)
 
 @login_required

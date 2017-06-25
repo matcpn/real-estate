@@ -16,10 +16,10 @@
 	<img src="{{ sub.image.url }}" id="coveredImage" usemap="#imgmap"/>
 	<map id="imgmap" name="imgmap">
 	{% endfor %}
-		{% for lot in lots %}
-		<div onclick="$('#radio{{lot.id}}').prop('checked', true);document.forms['div-form'].submit();return false;">
+		{% for lot, clickable in lots.items %}
+		<div {% if clickable %} onclick="$('#radio{{lot.id}}').prop('checked', true);document.forms['div-form'].submit();return false;" {% endif %}> 
 			<input type="radio" name="lot_id" id="radio{{lot.id}}" value="{{lot.id}}" style="display:none"/>
-			<area alt="" title="" href="#" shape="{{lot.shape}}" coords="{{lot.coords}}" data-maphilight='{"strokeColor":"{{lot.highlight}}","strokeWidth":5,"fillColor":"{{lot.fillColor}}","fillOpacity":0.6,"alwaysOn":true}' />
+			<area alt="" title="" {% if not clickable %} style="cursor: default;" {% endif %} shape="{{lot.shape}}" coords="{{lot.coords}}" data-maphilight='{"strokeColor":"{{lot.highlight}}","strokeWidth":5,"fillColor":"{{lot.fillColor}}","fillOpacity":0.6,"alwaysOn":true}' />
 		</div>
 		{% endfor %}
 	</map>
