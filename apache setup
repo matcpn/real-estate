@@ -1,0 +1,18 @@
+imagemap generator apache setup instructions
+
+move contents of directory into /var/www/html
+
+ sudo chown -R www-data:www-data /var/www/html/uploads
+ 
+ change /etc/apache2/apache2.conf to:
+ 
+ <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Require all denied
+        DirectoryIndex index.php
+</Directory>
+
+comment out the lines about deleting old images
+
+remove all logos and references to name
