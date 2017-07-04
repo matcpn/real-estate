@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
+
 room_types_array = ["Kitchen", "Bathroom", "Dining Room", "Living Room", "Garage", "Bedroom"]
 
 # Create your views here.
@@ -58,9 +59,14 @@ def index(request):
 	subdiv = Subdivision.objects.all()
 	user_choice = get_user_choice_for_user(request.user.username)
 	lots_clickable = {}
+	user_has_lot = True
+	try:
+		user_choice.lot is None
+	except UserChoice.lot.RelatedObjectDoesNotExist:
+		user_has_lot = False
 	for lot in lots:
 		if lot.status == "p" or lot.status == "s":
-			lots_clickable[lot] = user_choice.lot == lot
+			lots_clickable[lot] = user_choice.lot == lot if user_has_lot else False
 		else:
 			lots_clickable[lot] = True
 	context = {'lots': lots_clickable, 'subdiv': subdiv}
