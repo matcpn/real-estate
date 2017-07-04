@@ -64,7 +64,7 @@ if(!is_dir($uploadDir))
 }
 
 // delete old images from server -> 2 = 1 day
-$lifetimeInDays = 2;
+/*$lifetimeInDays = 2;
 if ($handle = opendir($uploadDir))
 {
 	while (false !== ($file = readdir($handle)))
@@ -88,7 +88,7 @@ if ($handle = opendir($uploadDir))
 		}
 	}
 	closedir($handle);
-}
+}*/
 
 // Check Session set and Loading previous Image
 $uploaded = false;
@@ -104,9 +104,6 @@ if(isset($_SESSION['image']) && $_SESSION['image'] != null && !empty($_SESSION['
 <body>
 	<header>
 		<div id="header">
-			<p><a href="http://imagemap-generator.dariodomi.de/"><img src="images/logo.png" alt="Imagemap Generator - Set links to image - image mapping tool" title="" id="logo" /></a></p>
-			<p class="author">Easy Imagemap Generator by <a rel="author" href="https://plus.google.com/113304109683958874741/">Dario D. Müller</a></p>
-			<div class="fork"><a href="https://github.com/DarioDomiDE/Imagemap-Generator" target="_blank"></a></div>
 		</div>
 	</header>
 		<?php
@@ -356,15 +353,6 @@ if(isset($_SESSION['image']) && $_SESSION['image'] != null && !empty($_SESSION['
 		<a href="https://plus.google.com/share?url=http://imagemap-generator.dariodomi.de" target="_blank" title="Share on Google+" class="gplus" /></a>
 		<a href="" title="Give Feedback" class="feedback" /></a>
 		-->
-		<div class="insetEffect paypal">
-			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-				<input type="hidden" name="cmd" value="_s-xclick">
-				<input type="hidden" name="hosted_button_id" value="3LJXDYJABWLTA">
-				<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal">
-				<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
-			</form>
-			<!--<span id="paypalAmount">3 € ?</span>-->
-		</div>
 	</div>
 	
 	<div id="feedbackPopup" class="insetEffect hidden">

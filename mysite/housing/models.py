@@ -88,7 +88,8 @@ class FlatPriceUpgrade(models.Model):
 class Room(models.Model):
 	roomname =  models.CharField(
 		help_text='name of the room',
-		max_length=100
+		max_length=100,
+		default=None
 	)
 	image = models.ImageField(default='no-img.png')
 	sqft = models.IntegerField()
