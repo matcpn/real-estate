@@ -201,10 +201,9 @@ def calcTotalPrice(request):
 
 @login_required
 def select_house(request, house_id):
-	if request.method == 'POST':
-		user_choice = get_user_choice_for_user(request.user.username)
-		user_choice.house = House.objects.get(pk=house_id)
-		user_choice.save()
+	user_choice = get_user_choice_for_user(request.user.username)
+	user_choice.house = House.objects.get(pk=house_id)
+	user_choice.save()
 	return room_types(request)
 
 def get_user_choice_for_user(username):
