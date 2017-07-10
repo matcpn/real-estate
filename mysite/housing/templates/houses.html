@@ -4,19 +4,19 @@
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <h1>Choose a house</h1>
-<form name="div-form" id="div-form" action="{% url 'housing:room_types'%}" method="post">
-	{% csrf_token %}
+
+	<div class="container">
+        <div class="row">
 	{% for house in houses %}
-	<div> 
-		<div onclick="$('#radio{{house.id}}').prop('checked', true);document.forms['div-form'].submit();return false;" style="cursor:pointer">
-			<input type="radio" name="house_id" id="radio{{house.id}}" value="{{house.id}}" style="display:none"/>
-			<div><img src="{{ house.image.url }}"/></div>
-			<div>Price: {{ house.price }}</div>
-			<div>Name: {{ house.name }}</div>
-			<div>Sqft: {{ house.sqft }}</div>
+		<div class="col-sm-4 col-lg-4 col-md-4 {{ upgrade.upgrade_type }} chosen-upgrade"> 
+			<div class="thumbnail">
+				<div><img src="{{ house.image.url }}"/></div>
+				<div class="caption">
+				<h4 style="text-align:center"><a href="../room_types/{{house.id}}">{{house.name}}</a></h4>
+					<h4 class="pull-right">${{ house.price }}</h4>
+					<h4 class="pull-left"> Sqft: {{ house.sqft }}</h4>
+				</div>
+			</div>
 		</div>
-	</div>
-	<br>
 	{% endfor %}
-</form>
 {% endblock %}
