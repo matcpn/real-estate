@@ -2,7 +2,7 @@
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="../static/js/upgrades.js" type="text/javascript"></script>
-<h1 style="text-align:center">{{room_type}}</h1>
+<h1>{{room_type}}</h1>
 
 <div class="container">
 
@@ -56,10 +56,10 @@
 				                <div class="caption">
 					                {% if upgrade.isPPSFUpgrade %}
 					                <h4 class="pull-right">${{ upgrade.ppsf }}/sf</h4>
-					                <h4><a href="../select_room_upgrade/{{upgrade.id}}/{{room}}/True/{{room_type|cut:" "}}">{{ upgrade.name }}</a>
+					                <h4><a href="../select_room_upgrade/{{upgrade.id}}/{{room}}/True/{{room_type|cut:" "}}">{{ upgrade.name }}</a></h4>
 					                {% else %}
 					                <h4 class="pull-right">${{ upgrade.price }}</h4>
-					                <h4><a href="../select_room_upgrade/{{upgrade.id}}/{{room}}/False/{{room_type|cut:" "}}">{{ upgrade.name }}</a>
+					                <h4><a href="../select_room_upgrade/{{upgrade.id}}/{{room}}/False/{{room_type|cut:" "}}">{{ upgrade.name }}</a></h4>
 					                {% endif %}
 					                </h4>
 					                <p>{{ upgrade.description }}</p>

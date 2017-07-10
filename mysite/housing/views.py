@@ -89,8 +89,12 @@ def house(request):
 
 @login_required
 def room_types(request):
+	user_choice = get_user_choice_for_user(request.user.username)
 	request.session['total_price'] = int(calcTotalPrice(request))
-	context = { 'room_types' : room_types_array }
+	context = {
+		'room_types' : room_types_array,
+		'house' : user_choice.house
+	}
 	return render(request, 'room_types.html', context)
 
 @login_required
@@ -196,10 +200,10 @@ def calcTotalPrice(request):
 	return user_choice.getTotalCost()
 
 @login_required
-def select_house(request):
+def select_house(request, house_id):
 	if request.method == 'POST':
 		user_choice = get_user_choice_for_user(request.user.username)
-		user_choice.house = House.objects.get(pk=request.POST['house_id'])
+		user_choice.house = House.objects.get(pk=house_id)
 		user_choice.save()
 	return room_types(request)
 

@@ -7,3 +7,7 @@
   left: 50%;
   transform: translatex(-50%);
 }
+
+h1 {
+	text-align: center;
+}
