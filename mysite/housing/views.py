@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, render_to_response, reverse, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from models import Lot, House, Kitchen, Bathroom, PricePerSquareFootUpgrade, UserChoice, Bedroom, LivingRoom, DiningRoom, Garage, UserRoomUpgradeMapping, FlatPriceUpgrade, Room, Subdivision
 from django.contrib.auth.decorators import login_required
@@ -24,15 +24,17 @@ def logout_view(request):
 def authenticate_user(request):
 	if request.method == 'POST':
 		# .. authenticate your user
+		if 'email' not in request.POST or 'password' not in request.POST:
+			return JsonResponse({'password': 'Invalid email or password.'}, status=401)
 		email = request.POST['email']
 		password = request.POST['password']
 		user = authenticate(request, username=email, password=password)
 		if user is not None:
 			auth_login(request, user)
 			# redirect to the value of next if it is entered
-			return redirect(request.POST.get('next','/'))
+			return JsonResponse({'success': 'success'}, status=200)
 		else:
-			return render(request, 'login.html')
+			return JsonResponse({'password': 'Invalid email or password.'}, status=401)
 
 def create_user(request):
 	if request.method == 'POST':
