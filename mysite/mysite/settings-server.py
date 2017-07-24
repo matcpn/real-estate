@@ -25,7 +25,7 @@ SECRET_KEY = 'j+c1983ll&3ut^9=zi7hbx#dbh@)n+qs!9!q6*vo1!#zniqp3n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'ec2-35-164-49-115.us-west-2.compute.amazonaws.com']
+ALLOWED_HOSTS = [u'ec2-35-163-99-102.us-west-2.compute.amazonaws.com']
 
 
 # Application definition
@@ -70,6 +70,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
+AUTHENTICATION_BACKENDS = ['housing.models.ModelBackend']
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -126,6 +127,15 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = '/home/ubuntu/real-estate/mysite/housing/media'
+MEDIA_ROOT = '/opt/real-estate/mysite/housing/media'
 
 LOGIN_URL = '/login/'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'email'
+EMAIL_HOST_PASSWORD = 'password'
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER

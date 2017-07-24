@@ -3,4 +3,5 @@ db.sqlite3
 *.jpg
 *.png
 mysite/housing/migrations/*
+*env/
 startbootstrap-shop-homepage/*
