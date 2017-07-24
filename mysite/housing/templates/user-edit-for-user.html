@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block totalprice %}
+{% endblock %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../static/js/bootstrap-treeview.min.js"></script>
+<link href="../static/css/bootstrap-treeview.min.css" rel="stylesheet">
+<h1>{{ user_choice.user.first_name }} {{ user_choice.user.last_name }}</h1>
+<div class="row">
+	<div class="col-md-4 col-lg-4 col-sm-4"></div>
+	<div class="col-sm-2 col-lg-2 col-md-2"> 
+		<div class="thumbnail">
+			<div><img src="{{ user_choice.lot.image.url }}"/></div>
+			<div class="caption">
+				<h4 style="text-align:center">{{ user_choice.lot.name }}</h4>
+				<h4 class="pull-right">${{ user_choice.lot.price }}</h4>
+				<h4 class="pull-left"> Sqft: {{ user_choice.lot.sqft }}</h4>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-2 col-lg-2 col-md-2"> 
+		<div class="thumbnail">
+			<div><img src="{{ user_choice.house.image.url }}"/></div>
+			<div class="caption">
+				<h4 style="text-align:center">{{ user_choice.house.name }}</h4>
+				<h4 class="pull-right">${{ user_choice.house.price }}</h4>
+				<h4 class="pull-left"> Sqft: {{ user_choice.house.sqft }}</h4>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 col-lg-4 col-sm-4"></div>
+</div>
+<div id="default-tree">
+	
+</div>
+<script>
+{% autoescape on %}
+	var tree = {{ myTree|safe }}
+{% endautoescape %}
+$('#default-tree').treeview({
+  data: tree
+});
+</script>
+{% endblock %}
