@@ -23,4 +23,6 @@ urlpatterns = [
     url(r'^create_user/$', views.create_user, name="create_user"),
     url(r'^logout_view/$', views.logout_view, name="logout_view"),
     url(r'^select_room_type/$', views.select_room_type, name="select_room_type"),
+    url(r'^user_edit/$', views.user_edit, name="user_edit"),
+    url(r'^user_edit_for_user/(.*)$', views.user_edit_for_user, name='user_edit_for_user'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

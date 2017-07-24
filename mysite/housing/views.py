@@ -5,11 +5,12 @@ from django.shortcuts import render, render_to_response, reverse, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from models import Lot, House, Kitchen, Bathroom, PricePerSquareFootUpgrade, UserChoice, Bedroom, LivingRoom, DiningRoom, Garage, UserRoomUpgradeMapping, FlatPriceUpgrade, Room, Subdivision
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.core import serializers
+import json
 
 room_types_array = ["Kitchen", "Bathroom", "Dining Room", "Living Room", "Garage", "Bedroom"]
 
@@ -228,6 +229,20 @@ def get_context_for_user_choice(request):
 		}
 	return context
 
+@user_passes_test(lambda u: u.is_superuser)
+def user_edit(request):
+	context = { 'user_choices' : UserChoice.objects.all() }
+	return render(request, 'user-edit.html', context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def user_edit_for_user(request, user_id):
+	user_choice = UserChoice.objects.get(pk=user_id)
+	context = { 
+		'user_choice' : user_choice,
+		'myTree'      : get_user_choice_tree(user_choice)
+		}
+	return render(request, 'user-edit-for-user.html', context)
+
 def get_object_for_room_type(room_type, room_id):
 	if room_type == "Kitchen":
 		return Kitchen.objects.get(pk=room_id)
@@ -255,3 +270,51 @@ def get_all_upgrades_for_chosen_room(room_type, room_id, user_choice):
 		return user_choice.house.diningRoom.get(pk=room_id)
 	if room_type == "Bedroom":
 		return user_choice.house.bedroom.get(pk=room_id)
+
+def get_all_chosen_upgrades_for_chosen_room(room, user_choice):
+	mapping = UserRoomUpgradeMapping.objects.filter(user=user_choice, roomname=room.name)
+	return mapping
+
+def get_all_rooms_for_chosen_room_type_in_house(room_type, user_choice):
+	if room_type == "Kitchen":
+		return user_choice.house.kitchen.all()
+	if room_type == "Bathroom":
+		return user_choice.house.bathroom.all()
+	if room_type == "LivingRoom":
+		return user_choice.house.livingRoom.all()
+	if room_type == "Garage":
+		return user_choice.house.garage.all()
+	if room_type == "DiningRoom":
+		return user_choice.house.diningRoom.all()
+	if room_type == "Bedroom":
+		return user_choice.house.bedroom.all()
+
+#the most complicated nonsense function ive ever written
+def get_user_choice_tree(user_choice):
+	tree = []
+
+	for room_type in room_types_array:
+		dropdown = {}
+		dropdown['text'] = room_type
+		dropdown['nodes'] = []
+
+		for room in get_all_rooms_for_chosen_room_type_in_house(room_type.replace(" ", ""), user_choice):
+			room_name_submenu = {}
+			room_name_submenu['text'] = room.name
+			room_name_submenu['nodes'] = []
+
+			upgrades = get_all_chosen_upgrades_for_chosen_room(room, user_choice)
+			if upgrades is not None:
+				for upgrade in upgrades:
+					upgrade_submenu = {}
+					if upgrade.upgrade_type is not None:
+						upgrade_submenu['text'] = upgrade.upgrade_type.name + " upgrade: " + upgrade.upgrade_name
+					else:
+						upgrade_submenu['text'] = upgrade.name
+					room_name_submenu['nodes'].append(upgrade_submenu)
+
+			dropdown['nodes'].append(room_name_submenu)
+
+		tree.append(dropdown)
+
+	return json.dumps(tree)
