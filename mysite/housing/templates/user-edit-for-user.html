@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block totalprice %}
+<li>
+	<a href="#" class="price-header">Total Price: {{user_choice.getTotalCost}}</a>
+</li>
 {% endblock %}
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -30,9 +33,11 @@
 	</div>
 	<div class="col-md-4 col-lg-4 col-sm-4"></div>
 </div>
-<div id="default-tree">
+<div class="col-md-3"></div>
+<div class="col-md-6" id="default-tree">
 	
 </div>
+<div class="col-md-3"></div>
 <script>
 {% autoescape on %}
 	var tree = {{ myTree|safe }}
