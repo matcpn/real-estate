@@ -10,6 +10,10 @@ class UserChoiceAdmin(admin.ModelAdmin):
 	exclude = ['room_upgrades']
 	readonly_fields = ['user', 'house', 'lot', 'chosen_upgrades', 'getTotalCost']
 
+@admin.register(models.UserRoomUpgradeMapping)
+class UserRoomUpgradeMappingAdmin(admin.ModelAdmin):
+	readonly_fields = ['user', 'room', 'roomname', 'upgrade_type']
+
 # Register your models here.
 admin.site.register(models.Lot)
 admin.site.register(models.House)
@@ -21,7 +25,6 @@ admin.site.register(models.DiningRoom)
 admin.site.register(models.LivingRoom)
 admin.site.register(models.PricePerSquareFootUpgrade)
 admin.site.register(models.FlatPriceUpgrade)
-admin.site.register(models.UserRoomUpgradeMapping)
 admin.site.register(models.Room)
 admin.site.register(models.UpgradeType)
 admin.site.register(models.Subdivision)

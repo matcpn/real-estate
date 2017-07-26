@@ -276,18 +276,21 @@ def get_all_chosen_upgrades_for_chosen_room(room, user_choice):
 	return mapping
 
 def get_all_rooms_for_chosen_room_type_in_house(room_type, user_choice):
-	if room_type == "Kitchen":
-		return user_choice.house.kitchen.all()
-	if room_type == "Bathroom":
-		return user_choice.house.bathroom.all()
-	if room_type == "LivingRoom":
-		return user_choice.house.livingRoom.all()
-	if room_type == "Garage":
-		return user_choice.house.garage.all()
-	if room_type == "DiningRoom":
-		return user_choice.house.diningRoom.all()
-	if room_type == "Bedroom":
-		return user_choice.house.bedroom.all()
+	if user_choice.house is not None:
+		if room_type == "Kitchen":
+			return user_choice.house.kitchen.all()
+		if room_type == "Bathroom":
+			return user_choice.house.bathroom.all()
+		if room_type == "LivingRoom":
+			return user_choice.house.livingRoom.all()
+		if room_type == "Garage":
+			return user_choice.house.garage.all()
+		if room_type == "DiningRoom":
+			return user_choice.house.diningRoom.all()
+		if room_type == "Bedroom":
+			return user_choice.house.bedroom.all()
+	else:
+		return []
 
 #the most complicated nonsense function ive ever written
 def get_user_choice_tree(user_choice):
@@ -295,7 +298,10 @@ def get_user_choice_tree(user_choice):
 
 	for room_type in room_types_array:
 		dropdown = {}
+		state_dict = {}
+		state_dict["expanded"] = "false"
 		dropdown['text'] = room_type
+		dropdown['state'] = state_dict
 		dropdown['nodes'] = []
 
 		for room in get_all_rooms_for_chosen_room_type_in_house(room_type.replace(" ", ""), user_choice):
@@ -307,10 +313,16 @@ def get_user_choice_tree(user_choice):
 			if upgrades is not None:
 				for upgrade in upgrades:
 					upgrade_submenu = {}
+					#set the upgrade text
 					if upgrade.upgrade_type is not None:
-						upgrade_submenu['text'] = upgrade.upgrade_type.name + " upgrade: " + upgrade.upgrade_name
+						if upgrade.ppsf_upgrade is not None:
+							upgrade_submenu['text'] = upgrade.upgrade_type.name + " upgrade: " + upgrade.upgrade_name + ", $" + str(upgrade.ppsf_upgrade.ppsf) + " per square foot"
+						else:
+							upgrade_submenu['text'] = upgrade.upgrade_type.name + " upgrade: " + upgrade.upgrade_name + ", $" + str(upgrade.flat_price_upgrade.price)
 					else:
 						upgrade_submenu['text'] = upgrade.name
+  					# set the upgrade link
+  					upgrade_submenu['href'] = "/admin/housing/userroomupgrademapping/" + str(upgrade.id) + "/change"
 					room_name_submenu['nodes'].append(upgrade_submenu)
 
 			dropdown['nodes'].append(room_name_submenu)
